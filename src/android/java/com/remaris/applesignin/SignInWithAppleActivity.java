@@ -2,11 +2,11 @@ package com.remaris.applesignin;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.XmlResourceParser;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -21,8 +21,6 @@ import org.xmlpull.v1.XmlPullParserException;
 import java.io.IOException;
 import java.util.Locale;
 
-import io.ionic.starter.R;
-
 public class SignInWithAppleActivity extends Activity {
 
     public static final String TAG = "SignInWithApple";
@@ -35,9 +33,9 @@ public class SignInWithAppleActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        final ConstraintLayout layout = new ConstraintLayout(this);
+        final LinearLayout layout = new LinearLayout(this);
         layout.setId(View.generateViewId());
-        ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         layout.setLayoutParams(layoutParams);
 
         webView = new WebView(this);
@@ -69,7 +67,7 @@ public class SignInWithAppleActivity extends Activity {
         // Override default if provided in config.xml
         try {
             Resources res = this.getResources();
-            XmlResourceParser xml = res.getXml(R.xml.config);
+            XmlResourceParser xml = res.getXml(getResourceID("config", "xml", getApplicationContext()));
             int eventType = -1;
             while (eventType != XmlResourceParser.END_DOCUMENT) {
                 if (eventType == XmlResourceParser.START_TAG) {
@@ -89,6 +87,15 @@ public class SignInWithAppleActivity extends Activity {
         }
 
         webView.loadUrl(APPLE_LOGIN_URL);
+    }
+
+    protected final static int getResourceID(final String resName, final String resType, final Context ctx) {
+        final int ResourceID = ctx.getResources().getIdentifier(resName, resType, ctx.getApplicationInfo().packageName);
+        if (ResourceID == 0) {
+            throw new IllegalArgumentException("No resource string found with name " + resName);
+        } else {
+            return ResourceID;
+        }
     }
 
     private boolean handledRedirect(String urlStr) {
