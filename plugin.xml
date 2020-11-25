@@ -30,11 +30,11 @@
           </feature>
       </config-file>
 
-      <config-file target="app/src/main/AndroidManifest.xml" parent="/manifest">
+      <config-file target="AndroidManifest.xml" parent="/*">
           <uses-permission android:name="android.permission.INTERNET" />          
       </config-file>
 
-      <config-file target="app/src/main/AndroidManifest.xml" parent="/manifest/application">
+      <config-file target="AndroidManifest.xml" parent="/manifest/application">
             <activity android:name="com.remaris.applesignin.SignInWithAppleActivity" ></activity>
       </config-file>
 
